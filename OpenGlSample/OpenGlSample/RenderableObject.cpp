@@ -11,3 +11,14 @@ void RenderableObject::shutDown()
 	glDeleteVertexArrays(1, &VertexArrayID);
 
 }
+
+void RenderableObject::SetPosition(float x, float y, float z)
+{
+
+	_objPos_x = x;
+	_objPos_y = y;
+	_objPos_z = z;
+}
+
+
+

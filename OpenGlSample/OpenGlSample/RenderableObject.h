@@ -22,6 +22,13 @@ public:
 	GLuint normalbuffer;
 	GLuint LightID;
 
+	glm::vec3 objpos;
+
+	float _objPos_x;
+	float _objPos_y;
+	float _objPos_z;
 public:
 	virtual void  shutDown() override;
+	virtual void SetPosition(float x, float y, float z);
+
 };

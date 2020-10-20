@@ -4,26 +4,13 @@
 
 class Sphere : public RenderableObject
 {
-private:
-	FileManager* file;
+
 public:
-	Sphere();
+	Sphere(FileManager * filepath);
 	virtual void shutDown() override;
-	void drawSphere();
-public:
-	GLuint _VertexID;
-	GLuint _programID;
-	GLuint _MatrixID;
-	GLuint _ViewMatrixID;
-	GLuint _ModelMatrixID;
-	GLuint _Texture;
-	GLuint _TextureID;
-	std::vector<glm::vec3> _vertices;
-	std::vector<glm::vec2> _uvs;
-	std::vector<glm::vec3> _normals;
-	GLuint _vertexbuffer;
-	GLuint _uvbuffer;
-	GLuint _normalbuffer;
-	GLuint _LightID;
+	virtual void SetPosition(float x, float y, float z) override;
+	void SetBuffer();
+
+	
 };
 

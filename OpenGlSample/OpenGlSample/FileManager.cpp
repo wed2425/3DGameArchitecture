@@ -47,7 +47,7 @@ void FileManager::loadObj(
 		}
 
 		{
-			loadObj(obj_path.c_str(), target_obj->vertices, target_obj->uvs, target_obj->normals);
+			loadOBj(obj_path.c_str(), target_obj->vertices, target_obj->uvs, target_obj->normals);
 
 			glGenBuffers(1, &target_obj->vertexbuffer);
 			glBindBuffer(GL_ARRAY_BUFFER, target_obj->vertexbuffer);
@@ -70,7 +70,7 @@ void FileManager::loadObj(
 	}
 
 
-bool FileManager::loadObj(
+bool FileManager::loadOBj(
 	const char* path,
 	std::vector<glm::vec3>& out_vertices,
 	std::vector<glm::vec2>& out_uvs,

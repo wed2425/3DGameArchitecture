@@ -3,11 +3,27 @@
 #include "Object.h"
 #include "Renderer.h"
 #include "RenderableObject.h"
+#include "IUpdate.h"
 
 #include "include/GL/glew.h"
 #include "include/GLFW/glfw3.h" 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+
+
+
+void Renderer::addObject(RenderableObject* _Obj)
+{
+	_objVector.push_back(_Obj);
+}
+
+void Renderer::RenderObject()
+{
+	for (int i = 0; i < _objVector.size(); i++)
+	{
+		render(_objVector[i]);
+	}
+}
 
 void Renderer::init()
 {
@@ -47,7 +63,7 @@ void Renderer::init()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Set the mouse at the center of the screen
-	glfwPollEvents();
+	
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 
 	// Dark blue background
@@ -63,9 +79,11 @@ void Renderer::init()
 
 }
 
+
+
 void Renderer::render(RenderableObject* src_obj)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 
 	// Use our shader
 	glUseProgram(src_obj->programID);
@@ -79,6 +97,7 @@ void Renderer::render(RenderableObject* src_obj)
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 	glm::mat4 ModelMatrix = glm::mat4(1.0);
+	ModelMatrix = GetPosition(ModelMatrix, src_obj);
 
 
 	glm::mat4 MVP = ProjectionMatrix * ViewMatrix  * ModelMatrix;
@@ -139,12 +158,41 @@ void Renderer::render(RenderableObject* src_obj)
 	glDisableVertexAttribArray(2);
 
 	// Swap buffers
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+	
+
 
 }
+
+
 
 void Renderer::shutDown()
 {
 	glfwTerminate();
+}
+
+glm::mat4 Renderer::GetPosition(glm::mat4 Model, RenderableObject* _obj)
+{
+	float x, y, z;
+	x = _obj->_objPos_x;
+	y = _obj->_objPos_y;
+	z = _obj->_objPos_z;
+
+	Model = glm::translate(Model, glm::vec3(x, y, z));
+	return Model;
+}
+
+void Renderer::RenderFirst()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::RenderLast()
+{
+	glfwSwapBuffers(GetWindow());
+	glfwPollEvents();
+}
+
+void Renderer::Update(IUpdate* _src_obj)
+{
+	_src_obj->Update();
 }

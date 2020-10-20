@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더">
+      <UniqueIdentifier>{4b309c8f-9342-42b2-920b-177901ffa1f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glm\detail\_features.hpp">
@@ -765,29 +768,32 @@
     <ClInclude Include="include\GLFW\glfw3native.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="Sphere.h">
+      <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ICleanUp.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="RenderableObject.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="NonRenderableObject.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="IUpdate.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="ICleanUp.h">
+      <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="Human.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="FileManager.h">
+      <Filter>헤더</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1213,6 +1219,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="NonRenderableObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
