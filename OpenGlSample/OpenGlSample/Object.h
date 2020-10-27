@@ -13,7 +13,7 @@
 class Object : public ICleanUp
 {
 
-	glm::mat4 translate;
+
 public:
 	Object();
 	virtual ~Object() {}

@@ -1,31 +1,26 @@
-#include "Sphere.h"
+#include "Human.h"
 
-
-
-Sphere::Sphere(FileManager* filepath)
+Human::Human(FileManager* filepath)
 {
 	TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
-	filepath->loadOBj("sphere.obj", vertices, uvs, normals);
+	filepath->loadOBj("human.obj", vertices, uvs, normals);
 
 	programID = filepath->loadShaders("20161621_vs.shader", "20161621_fs.shader");
 
-	Texture = filepath->loadBMP("ball.bmp");
+	Texture = filepath->loadBMP("skin.bmp");
 
 
 	SetBuffer();
 
-
-	
-	
 }
 
-void Sphere::SetPosition(float x, float y, float z)
+void Human::SetPosition(float x, float y, float z)
 {
 	Position = glm::vec3(x, y, z);
 }
 
-void Sphere::SetBuffer()
+void Human::SetBuffer()
 {
 	MatrixID = glGetUniformLocation(programID, "MVP");
 	ViewMatrixID = glGetUniformLocation(programID, "V");
@@ -46,7 +41,7 @@ void Sphere::SetBuffer()
 }
 
 
-void Sphere::shutDown()
+void Human::shutDown()
 {
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
@@ -55,8 +50,3 @@ void Sphere::shutDown()
 	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
-
-
-
-
-

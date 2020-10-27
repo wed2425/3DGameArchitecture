@@ -2,33 +2,30 @@
 
 #include "Object.h"
 
-class RenderableObject : public Object
+#include "Renderer.h"
+#include "IRender.h"
+
+
+class RenderableObject : public Object , public IRender
 {
+private:
+	bool IsMoveCheck = false;
 public:
-	GLuint VertexArrayID;
-	GLuint programID;
-	GLuint MatrixID;
-	GLuint ViewMatrixID;
-	GLuint ModelMatrixID;
-	GLuint Texture;
-	GLuint TextureID;
+	
 
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec2> uvs;
-	std::vector<glm::vec3> normals;
+	glm::vec3 Position;
+	glm::vec3 Scale;
+	
+	
 
-	GLuint vertexbuffer;
-	GLuint uvbuffer;
-	GLuint normalbuffer;
-	GLuint LightID;
 
-	glm::vec3 objpos;
-
-	float _objPos_x;
-	float _objPos_y;
-	float _objPos_z;
 public:
+
 	virtual void  shutDown() override;
-	virtual void SetPosition(float x, float y, float z);
+	virtual void SetPosition(float x, float y, float z) {};
+	virtual void setMoving(bool IsCheck);
+	virtual bool getMoving();
+	virtual void SetScale(float x,float y,float z) {};
+
 
 };

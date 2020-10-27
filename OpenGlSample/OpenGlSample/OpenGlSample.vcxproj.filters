@@ -789,10 +789,16 @@
     <ClInclude Include="ICleanUp.h">
       <Filter>헤더</Filter>
     </ClInclude>
-    <ClInclude Include="Human.h">
+    <ClInclude Include="FileManager.h">
       <Filter>헤더</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
+    <ClInclude Include="KeyBoard.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="IRender.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Human.h">
       <Filter>헤더</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1222,6 +1228,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="NonRenderableObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyBoard.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Human.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

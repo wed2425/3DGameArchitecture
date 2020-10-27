@@ -40,7 +40,7 @@ void FileManager::loadObj(
 		target_obj->ModelMatrixID = glGetUniformLocation(target_obj->programID, "M");
 
 		{
-			target_obj->Texture = loadDDS(texture_path.c_str());
+			target_obj->Texture = loadBMP(texture_path.c_str());
 
 			// Get a handle for our "myTextureSampler" uniform
 			target_obj->TextureID = glGetUniformLocation(target_obj->programID, "myTextureSampler");
@@ -258,6 +258,87 @@ GLuint FileManager::loadDDS(const char* imagepath)
 	return textureID;
 
 
+}
+
+GLuint FileManager::loadBMP(const char* imagepath)
+{
+
+		printf("Reading image %s\n", imagepath);
+
+		//BMP파일의 헤더에서 데이터를 읽는다
+		unsigned char header[54];
+		unsigned int dataPos;
+		unsigned int imageSize;
+		unsigned int width, height;
+		//실제 RGB 데이터
+		unsigned char* data;
+
+		//파일을 연다
+		FILE* file = fopen(imagepath, "rb");
+		if (!file) {
+			printf("%s Can not Open. Check the path again.\n", imagepath);
+			getchar();
+			return 0;
+		}
+
+		//헤더를 읽는다, i.e. the 54 first bytes
+
+		//만약 54 bytes보다 적게 읽혔으면 문제 발생
+		if (fread(header, 1, 54, file) != 54) {
+			printf("It is not BMP File\n");
+			return 0;
+		}
+		//A BMP 파일은 항상 "BM"으로 시작한다.
+		if (header[0] != 'B' || header[1] != 'M') {
+			printf("It is not BMP File\n");
+			return 0;
+		}
+		//24pp file임을 확인한다.
+		if (*(int*)&(header[0x1e]) != 0 || *(int*)&(header[0x1C]) != 24) {
+			printf("It is not BMP File\n");
+			return 0;
+		}
+
+		//이미지에 대한 정보를 읽는다.
+		dataPos = *(int*)&(header[0x0A]);
+		imageSize = *(int*)&(header[0x22]);
+		width = *(int*)&(header[0x12]);
+		height = *(int*)&(header[0x16]);
+
+		//몇몇 BMP 파일들은 포맷이 놓쳐졌다, 놓쳐진 정보를 추측해라
+		if (imageSize == 0) imageSize = width * height * 3; // 3 : one byte for each Red-Green-Blue component
+		if (dataPos == 0) dataPos = 54; //BMP 헤더는 항상 이 형식
+
+		//버퍼를 생성한다
+		data = new unsigned char[imageSize];
+
+		//파일의 버퍼에 있는 실제 데이터를 읽는다
+		fread(data, 1, imageSize, file);
+
+		//모든 것은 현재 메모리에 있다, 파일을 닫는다
+		fclose(file);
+
+		//openGL 텍스처를 만든다
+		GLuint textureID;
+		glGenTextures(1, &textureID);
+
+		//새로이 만들어진 텍스처를 바인딩한다.
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		//이미지를 OpenGL에게 넘긴다
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+		delete[] data;
+
+		// trilinear(삼선형) 필터링
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		return textureID;
+	
 }
 
 GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragment_file_path)

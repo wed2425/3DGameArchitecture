@@ -10,14 +10,14 @@
 #include "RenderableObject.h"
 #include "NonRenderableObject.h"
 #include "Sphere.h"
+#include "Human.h"
 
 int main()
 {
 	FileManager* file_mgr = FileManager::instance();
 
-	Renderer* renderer = Renderer::instance();
 
-	renderer->init();
+	Renderer::instance()->init();
 
 	NonRenderableObject* nonobj = new NonRenderableObject();
 
@@ -25,37 +25,44 @@ int main()
 
 	Sphere* sphere = new Sphere(file_mgr);
 	
+	Human* human = new Human(file_mgr);
 	
-
+	
 	file_mgr->loadObj(
 		cube,
-		"cube.obj",
-		"uvtemplate.DDS",
+		"ground.obj",
+		"background.bmp",
 		"20161621_vs.shader",
 		"20161621_fs.shader"
 		);
 	
-	cube->SetPosition(1.5f, 2.0f, 2.0f);
-	sphere->SetPosition(-3.0f, -1.0f, -2.0f);
+	cube->SetPosition(1.0f, 0.0f, 0.0f);
+	
+	sphere->SetPosition(1.5f, 2.0f, 2.0f);
 
-	renderer->addObject(cube);
-	renderer->addObject(sphere);
+	human->SetPosition(0.9f, 0.0f, 3.0f);
+
+	sphere->setMoving(true);
+
+	Renderer::instance()->addObject(cube);
+	Renderer::instance()->addObject(sphere);
+	Renderer::instance()->addObject(human);
 
 	while (true)
 	{
 	
 		
-		renderer->RenderFirst();
-		renderer->RenderObject();
-		renderer->Update(nonobj);
-		renderer->RenderLast();
-		
+		Renderer::instance()->RenderFirst();
+		Renderer::instance()->RenderObject();
+		Renderer::instance()->Update(nonobj);
+		Renderer::instance()->RenderLast();
+		Renderer::instance()->Quit();
 		
 	
 	}
 	cube->shutDown();
 	sphere->shutDown();
-	renderer->shutDown();
+	Renderer::instance()->shutDown();
 	
 	delete cube;
 	delete sphere;

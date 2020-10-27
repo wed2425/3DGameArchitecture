@@ -115,6 +115,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IRender.h" />
+    <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="IUpdate.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="FileManager.h" />
@@ -514,7 +516,9 @@
     <None Include="20161621_vs.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="KeyBoard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NonRenderableObject.cpp" />
     <ClCompile Include="Object.cpp" />
