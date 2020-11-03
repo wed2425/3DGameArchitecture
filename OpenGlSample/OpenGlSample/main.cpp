@@ -6,6 +6,7 @@
 
 #include "Object.h"
 #include "FileManager.h"
+#include "Time.h"
 #include "Renderer.h"
 #include "RenderableObject.h"
 #include "NonRenderableObject.h"
@@ -53,8 +54,12 @@ int main()
 	
 		
 		Renderer::instance()->RenderFirst();
+		if (Time::instance()->IsFixedRendering())
+		{
+			Renderer::instance()->Update(nonobj);
+		}
+		
 		Renderer::instance()->RenderObject();
-		Renderer::instance()->Update(nonobj);
 		Renderer::instance()->RenderLast();
 		Renderer::instance()->Quit();
 		
