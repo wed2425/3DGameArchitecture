@@ -15,10 +15,6 @@ Human::Human(FileManager* filepath)
 
 }
 
-void Human::SetPosition(float x, float y, float z)
-{
-	Position = glm::vec3(x, y, z);
-}
 
 void Human::SetBuffer()
 {

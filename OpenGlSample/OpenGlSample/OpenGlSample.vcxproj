@@ -115,9 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IInit.h" />
+    <ClInclude Include="InputKey.h" />
     <ClInclude Include="IRender.h" />
-    <ClInclude Include="KeyBoard.h" />
+    <ClInclude Include="ISetPostion.h" />
     <ClInclude Include="IUpdate.h" />
+    <ClInclude Include="nonrenderObj.h" />
+    <ClInclude Include="renderObj.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="glm\common.hpp" />
@@ -519,12 +523,14 @@
   <ItemGroup>
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="KeyBoard.cpp" />
+    <ClCompile Include="InputKey.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NonRenderableObject.cpp" />
+    <ClCompile Include="nonrenderObj.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="RenderableObject.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="renderObj.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>

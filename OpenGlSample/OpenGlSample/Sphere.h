@@ -13,7 +13,6 @@ public:
 	Sphere(FileManager * filepath);
 	virtual void shutDown() override;
 
-	virtual void SetPosition(float x, float y, float z) override;
 	void SetBuffer();
 
 

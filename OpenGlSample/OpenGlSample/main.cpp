@@ -10,67 +10,40 @@
 #include "Renderer.h"
 #include "RenderableObject.h"
 #include "NonRenderableObject.h"
-#include "Sphere.h"
-#include "Human.h"
+#include "renderObj.h"
+#include "nonrenderObj.h"
 
 int main()
 {
-	FileManager* file_mgr = FileManager::instance();
+	
 
+
+	FileManager::instance();
+	Renderer::instance();
+	renderObj* ball = new renderObj();
+	nonrenderObj* nonObj = new nonrenderObj();
 
 	Renderer::instance()->init();
-
-	NonRenderableObject* nonobj = new NonRenderableObject();
-
-	RenderableObject* cube = new RenderableObject();
-
-	Sphere* sphere = new Sphere(file_mgr);
-	
-	Human* human = new Human(file_mgr);
 	
 	
-	file_mgr->loadObj(
-		cube,
-		"ground.obj",
-		"background.bmp",
-		"20161621_vs.shader",
-		"20161621_fs.shader"
-		);
-	
-	cube->SetPosition(1.0f, 0.0f, 0.0f);
-	
-	sphere->SetPosition(1.5f, 2.0f, 2.0f);
-
-	human->SetPosition(0.9f, 0.0f, 3.0f);
-
-	sphere->setMoving(true);
-
-	Renderer::instance()->addObject(cube);
-	Renderer::instance()->addObject(sphere);
-	Renderer::instance()->addObject(human);
-
-	while (true)
+	while (glfwGetKey(Renderer::instance()->window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::instance()->window) == 0)
 	{
-	
-		
 		Renderer::instance()->RenderFirst();
+	
 		if (Time::instance()->IsFixedRendering())
 		{
-			Renderer::instance()->Update(nonobj);
+			Renderer::instance()->Update();
 		}
 		
-		Renderer::instance()->RenderObject();
-		Renderer::instance()->RenderLast();
-		Renderer::instance()->Quit();
-		
-	
-	}
-	cube->shutDown();
-	sphere->shutDown();
-	Renderer::instance()->shutDown();
-	
-	delete cube;
-	delete sphere;
+		Renderer::instance()->render();
 
-	return 0;
+
+		Renderer::instance()->RenderLast();
+	}
+
+	Renderer::instance()->shutDown();
+
+	delete nonObj;
+	delete ball;
+	
 }

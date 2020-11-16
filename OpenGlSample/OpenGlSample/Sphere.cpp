@@ -20,10 +20,6 @@ Sphere::Sphere(FileManager* filepath)
 	
 }
 
-void Sphere::SetPosition(float x, float y, float z)
-{
-	Position = glm::vec3(x, y, z);
-}
 
 void Sphere::SetBuffer()
 {

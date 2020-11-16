@@ -16,6 +16,9 @@
     <Filter Include="헤더">
       <UniqueIdentifier>{4b309c8f-9342-42b2-920b-177901ffa1f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더\인터페이스">
+      <UniqueIdentifier>{dac6f16d-d837-43be-9c37-e734f46116c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glm\detail\_features.hpp">
@@ -783,25 +786,37 @@
     <ClInclude Include="NonRenderableObject.h">
       <Filter>헤더</Filter>
     </ClInclude>
-    <ClInclude Include="IUpdate.h">
-      <Filter>헤더</Filter>
-    </ClInclude>
-    <ClInclude Include="ICleanUp.h">
-      <Filter>헤더</Filter>
-    </ClInclude>
     <ClInclude Include="FileManager.h">
-      <Filter>헤더</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyBoard.h">
-      <Filter>헤더</Filter>
-    </ClInclude>
-    <ClInclude Include="IRender.h">
       <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="Human.h">
       <Filter>헤더</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="IInit.h">
+      <Filter>헤더\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="ICleanUp.h">
+      <Filter>헤더\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="IRender.h">
+      <Filter>헤더\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="IUpdate.h">
+      <Filter>헤더\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="ISetPostion.h">
+      <Filter>헤더\인터페이스</Filter>
+    </ClInclude>
+    <ClInclude Include="renderObj.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="nonrenderObj.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="InputKey.h">
       <Filter>헤더</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1233,13 +1248,19 @@
     <ClCompile Include="NonRenderableObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KeyBoard.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Human.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="renderObj.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="nonrenderObj.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InputKey.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

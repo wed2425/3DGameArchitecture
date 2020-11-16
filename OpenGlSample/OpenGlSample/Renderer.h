@@ -1,27 +1,34 @@
 #pragma once
+
 #include "ICleanUp.h"
-#include "KeyBoard.h"
+#include "ISetPostion.h"
+#include "IUpdate.h"
+#include "FileManager.h"
+#include "NonRenderableObject.h"
+#include "RenderableObject.h"
+#include "Object.h"
+#include "Renderer.h"
 #include <vector>
-#include "include/GL/glew.h"		
+#include "include/GL/glew.h"
 #include "include/GLFW/glfw3.h" 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 
-struct GLFWwindow;
+
 class NonRenderableObject;
 class RenderableObject;
-class IUpdate;
 
 
 
-class Renderer : public ICleanUp 
+
+class Renderer : public ICleanUp , public ISetPosition , public IUpdate
 {
 private:
-	GLFWwindow* window;
+	
 	std::vector<RenderableObject*> _objVector;
-	RenderableObject* renderobj;
-	glm::vec3 cameraPos;
-	glm::mat4 ViewMatrix;
-	glm::mat4 ProjectionMatrix;
+	std::vector<NonRenderableObject*> _nonobjVector;
+
 
 public:
 	static Renderer* instance()
@@ -34,30 +41,27 @@ public:
 
 
 public:
-	void render(RenderableObject* src_obj);
-
-	void RenderObject();
-
-	void init();
-
-	void addObject(RenderableObject* _Obj);
-
-	virtual void  shutDown() override;
-
-	GLFWwindow* GetWindow() const { return window; }
-
-	glm::mat4 GetPosition(glm::mat4 , RenderableObject* src_obj);
+	
 
 	void RenderFirst();
 
+	void render();
+
 	void RenderLast();
 
-	void Update(IUpdate* _src_obj);
+	void addRenderObject(RenderableObject* obj);
 
-	void Quit();
+	void addNonRenderObject(NonRenderableObject* obj);
 
-	glm::mat4 ModelMatrix;
+	void init();
 
-	float initialFov = 45.0f;
+	GLFWwindow* window;
+
+	
+	virtual void  shutDown() override;
+	virtual void Update()override;
+	virtual void setPosition(float x, float y, float z)override;
+	
+
 
 };

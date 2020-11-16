@@ -3,8 +3,11 @@
 #include <vector>
 
 
+#include "Object.h"
+#include "FileManager.h"
+#include "RenderableObject.h"
 #include "glm/glm.hpp"
-
+#include "include/GL/glew.h"
 
 class RenderableObject;
 
@@ -22,10 +25,10 @@ public:
 public:
 	void loadObj(
 		RenderableObject* target_obj,
-		std::string obj_path,
-		std::string texture_path,
-		std::string vs_shader_path,
-		std::string fs_shader_path
+		const char* obj_path,
+		const char* texture_path,
+		const char* vs_shader_path,
+		const char* fs_shader_path
 	);
 
 	bool loadOBj(

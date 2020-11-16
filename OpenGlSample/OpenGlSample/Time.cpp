@@ -24,12 +24,12 @@ bool Time::IsFixedRendering()
 		count++;
 		if (frame == count)
 		{
-			std::cout << "1ae" << std::endl;
+			//std::cout << "1ae" << std::endl;
 			count = 0;
 		}
 		return true;
 	}
-	std::cout << "Dis   " << timeDistance << "   FPS   " << 1 / (timeDistance / (double)frameinfo.QuadPart) << std::endl;
+	//std::cout << "Dis   " << timeDistance << "   FPS   " << 1 / (timeDistance / (double)frameinfo.QuadPart) << std::endl;
 	
 	return false;
 }

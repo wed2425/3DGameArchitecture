@@ -4,29 +4,17 @@
 
 
 
-void RenderableObject::shutDown()
+RenderableObject::RenderableObject()
 {
-	
-	glDeleteBuffers(1, &vertexbuffer);
-	glDeleteBuffers(1, &uvbuffer);
-	glDeleteBuffers(1, &normalbuffer);
-	glDeleteProgram(programID);
-	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
-
+	Renderer::instance()->addRenderObject(this);
 }
 
 
 
-void RenderableObject::setMoving(bool IsCheck)
-{
-	IsMoveCheck = IsCheck;
-}
 
-bool RenderableObject::getMoving()
-{
-	return IsMoveCheck;
-}
+
+
+
 
 
 
