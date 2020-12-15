@@ -10,7 +10,7 @@ public:
 		return &instance;
 	}
 
-	Time();
+
 	bool IsFixedRendering();
 
 
@@ -22,6 +22,7 @@ private:
 	LARGE_INTEGER frameinfo;
 	LARGE_INTEGER prevFrameCounter;
 	LARGE_INTEGER FrameCounter;
+	Time();
 
 	
 };

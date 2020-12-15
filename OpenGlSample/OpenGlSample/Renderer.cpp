@@ -1,149 +1,130 @@
 #include <stdio.h>
+
+#include "Object.h"
 #include "Renderer.h"
+#include "RenderableObj.h"
+#include "NonRenderableObj.h"
 
+#include "include/GL/glew.h"
+#include "include/GLFW/glfw3.h" 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
-
-void Renderer::addRenderObject(RenderableObject* obj)
+void Renderer::addRenderObj(RenderableObj* obj)
 {
-	_objVector.push_back(obj);
+	renderObjList.push_back(obj);
 }
 
-void Renderer::addNonRenderObject(NonRenderableObject * obj)
+void Renderer::addNonRenderObj(NonRenderableObj* obj)
 {
-	_nonobjVector.push_back(obj);
+	nonrenderObjList.push_back(obj);
 }
 
-void Renderer::init()
+int Renderer::init()
 {
-	
-
 	if (!glfwInit())
 	{
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		getchar();
-		return;
+		return -1;
 	}
 
-	
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
 
-	// Open a window and create its OpenGL context
-	window = glfwCreateWindow(1024, 768, "Tutorial 08 - Basic Shading", NULL, NULL);
+	window = glfwCreateWindow(1024, 768, "20161621 Kim_Min_Seok", NULL, NULL);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 		getchar();
 		glfwTerminate();
-		return;
+		return -1;
 	}
 	glfwMakeContextCurrent(window);
 
-	glewExperimental = true; // Needed for core profile
+	glewExperimental = true;
+
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		getchar();
 		glfwTerminate();
-		return;
+		return -1;
 	}
 
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	// Set the mouse at the center of the screen
-	
-	//glfwSetCursorPos(window, 1024 / 2, 768 / 2);
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
-	// Dark blue background
-	glClearColor(0.0f, 0.7f, 0.0f, 0.0f);
-
-	// Enable depth test
+	// depth test
 	glEnable(GL_DEPTH_TEST);
-	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
-	// Cull triangles which normal is not towards the camera
-	//glEnable(GL_CULL_FACE);
-
-	for (std::vector<RenderableObject*>::iterator it = _objVector.begin(); it != _objVector.end(); it++)
+	for (std::vector<RenderableObj*>::iterator it = renderObjList.begin(); it != renderObjList.end(); it++)
 	{
 		(*it)->init();
 	}
 
-	for (std::vector<NonRenderableObject*>::iterator it = _nonobjVector.begin(); it != _nonobjVector.end(); it++)
+	for (std::vector<NonRenderableObj*>::iterator it = nonrenderObjList.begin(); it != nonrenderObjList.end(); it++)
 	{
 		(*it)->init();
 	}
 
-}
-
-void Renderer::Update()
-{
-	for (std::vector<RenderableObject*>::iterator it = _objVector.begin(); it != _objVector.end(); it++)
-	{
-		(*it)->Update();
-	}
-
-	for (std::vector<NonRenderableObject*>::iterator it = _nonobjVector.begin(); it != _nonobjVector.end(); it++)
-	{
-		(*it)->Update();
-
-	}
 }
 
 void Renderer::render()
 {
-	for (std::vector<RenderableObject*>::iterator it = _objVector.begin(); it != _objVector.end(); it++)
+	for (std::vector<RenderableObj*>::iterator it = renderObjList.begin(); it != renderObjList.end(); it++)
 	{
 		(*it)->render();
 	}
 
-	for (std::vector<NonRenderableObject*>::iterator it = _nonobjVector.begin(); it != _nonobjVector.end(); it++)
+	for (std::vector<NonRenderableObj*>::iterator it = nonrenderObjList.begin(); it != nonrenderObjList.end(); it++)
 	{
 		(*it)->render();
 	}
-	
 }
-
-
 
 void Renderer::shutDown()
 {
-	for (std::vector<RenderableObject*>::iterator it = _objVector.begin(); it != _objVector.end(); it++)
-	{
-		(*it)->shutDown();
-	}
-
-	for (std::vector<NonRenderableObject*>::iterator it = _nonobjVector.begin(); it != _nonobjVector.end(); it++)
-	{
-		(*it)->shutDown();
-
-	}
-
 	glfwTerminate();
+	for (std::vector<RenderableObj*>::iterator it = renderObjList.begin(); it != renderObjList.end(); it++)
+	{
+		(*it)->shutDown();
+	}
+
+	for (std::vector<NonRenderableObj*>::iterator it = nonrenderObjList.begin(); it != nonrenderObjList.end(); it++)
+	{
+		(*it)->shutDown();
+	}
+}
+
+void Renderer::update()
+{
+	for (std::vector<RenderableObj*>::iterator it = renderObjList.begin(); it != renderObjList.end(); it++)
+	{
+		(*it)->Update();
+	}
+
+	for (std::vector<NonRenderableObj*>::iterator it = nonrenderObjList.begin(); it != nonrenderObjList.end(); it++)
+	{
+		(*it)->Update();
+	}
 }
 
 
-
-void Renderer::RenderFirst()
+void Renderer::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-
-void Renderer::RenderLast()
+void Renderer::Out()
 {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		exit(0);
+	}
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
-
-
-
-void Renderer::setPosition(float x, float y, float z)
-{
-
-}
-
-

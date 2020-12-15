@@ -1,25 +1,26 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <vector>
 #include <iostream>
 #include <sstream>
 #include <fstream>
+
+#include "Object.h"
 #include "FileManager.h"
 
-
+#include "RenderableObj.h"
+#include "include/GL/glew.h"
 
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
+#pragma warning(disable:4996)
 
-bool FileManager::loadOBj(
+bool FileManager::loadOBJ(
 	const char* path,
 	std::vector<glm::vec3>& out_vertices,
 	std::vector<glm::vec2>& out_uvs,
-	std::vector<glm::vec3>& out_normals)
-{
+	std::vector<glm::vec3>& out_normals
+) {
 	printf("Loading OBJ file %s...\n", path);
 
 	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
@@ -111,8 +112,7 @@ bool FileManager::loadOBj(
 	return true;
 }
 
-GLuint FileManager::loadBMP(const char* imagepath)
-{
+GLuint FileManager::loadBMP(const char* imagepath) {
 
 	printf("Reading image %s\n", imagepath);
 
@@ -189,12 +189,10 @@ GLuint FileManager::loadBMP(const char* imagepath)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	return textureID;
-
 }
 
-GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragment_file_path)
+GLuint FileManager::LoadShaders(const char* vertex_file_path, const char* fragment_file_path)
 {
-
 	// Create the shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -234,7 +232,6 @@ GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragme
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
 	glCompileShader(VertexShaderID);
 
-	// Check Vertex Shader
 	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0) {
@@ -245,13 +242,11 @@ GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragme
 
 
 
-	// Compile Fragment Shader
 	printf("Compiling shader : %s\n", fragment_file_path);
 	char const* FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
 	glCompileShader(FragmentShaderID);
 
-	// Check Fragment Shader
 	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0) {
@@ -261,15 +256,12 @@ GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragme
 	}
 
 
-
-	// Link the program
 	printf("Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
 	glLinkProgram(ProgramID);
 
-	// Check the program
 	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
 	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0) {
@@ -289,140 +281,31 @@ GLuint FileManager::loadShaders(const char* vertex_file_path, const char* fragme
 }
 
 
-
-void FileManager::loadObj(
-	RenderableObject* target_obj,
-	const char* obj_path,
-	const char* texture_path,
-	const char* vs_shader_path,
-	const char* fs_shader_path)
+void FileManager::loadObj(RenderableObj* target_obj,
+	std::string obj_path,
+	std::string texture_path,
+	std::string vs_shader_path,
+	std::string fs_shader_path)
 {
-	
-		target_obj->programID = loadShaders(vs_shader_path, fs_shader_path);
-		target_obj->MatrixID = glGetUniformLocation(target_obj->programID, "MVP");
-		target_obj->Texture = loadBMP(texture_path);
-		target_obj->TextureID = glGetUniformLocation(target_obj->programID, "myTextureSampler");
+	target_obj->programID = LoadShaders(vs_shader_path.c_str(), fs_shader_path.c_str());
+	target_obj->MatrixID = glGetUniformLocation(target_obj->programID, "MVP");
+	target_obj->Texture = loadBMP(texture_path.c_str());
+	target_obj->TextureID = glGetUniformLocation(target_obj->programID, "myTextureSampler");
 
+	glGenVertexArrays(1, &target_obj->VertexArrayID);
+	glBindVertexArray(target_obj->VertexArrayID);
 
-		glGenVertexArrays(1, &target_obj->VertexArrayID);
-		glBindVertexArray(target_obj->VertexArrayID);
+	bool res = loadOBJ(obj_path.c_str(), target_obj->vertices, target_obj->uvs, target_obj->normals);
 
+	glGenBuffers(1, &target_obj->vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, target_obj->vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, target_obj->vertices.size() * sizeof(glm::vec3), &target_obj->vertices[0], GL_STATIC_DRAW);
 
-		bool res = loadOBj(obj_path, target_obj->vertices, target_obj->uvs, target_obj->normals);
+	glGenBuffers(1, &target_obj->uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, target_obj->uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, target_obj->uvs.size() * sizeof(glm::vec2), &target_obj->uvs[0], GL_STATIC_DRAW);
 
-		
-		
-			
-			glGenBuffers(1, &target_obj->vertexbuffer);
-			glBindBuffer(GL_ARRAY_BUFFER, target_obj->vertexbuffer);
-			glBufferData(GL_ARRAY_BUFFER, target_obj->vertices.size() * sizeof(glm::vec3), &target_obj->vertices[0], GL_STATIC_DRAW);
-
-			glGenBuffers(1, &target_obj->uvbuffer);
-			glBindBuffer(GL_ARRAY_BUFFER, target_obj->uvbuffer);
-			glBufferData(GL_ARRAY_BUFFER, target_obj->uvs.size() * sizeof(glm::vec2), &target_obj->uvs[0], GL_STATIC_DRAW);
-
-			glGenBuffers(1, &target_obj->normalbuffer);
-			glBindBuffer(GL_ARRAY_BUFFER, target_obj->normalbuffer);
-			glBufferData(GL_ARRAY_BUFFER, target_obj->normals.size() * sizeof(glm::vec3), &target_obj->normals[0], GL_STATIC_DRAW);
-		
-
-		
-		
-
-	}
-
-
-
-GLuint FileManager::loadDDS(const char* imagepath)
-{
-	unsigned char header[124];
-
-	FILE* fp;
-
-	/* try to open the file */
-	fopen_s(&fp, imagepath, "rb");
-	if (fp == NULL) {
-		printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); getchar();
-		return 0;
-	}
-
-	/* verify the type of file */
-	char filecode[4];
-	fread(filecode, 1, 4, fp);
-	if (strncmp(filecode, "DDS ", 4) != 0) {
-		fclose(fp);
-		return 0;
-	}
-
-	/* get the surface desc */
-	fread(&header, 124, 1, fp);
-
-	unsigned int height = *(unsigned int*)&(header[8]);
-	unsigned int width = *(unsigned int*)&(header[12]);
-	unsigned int linearSize = *(unsigned int*)&(header[16]);
-	unsigned int mipMapCount = *(unsigned int*)&(header[24]);
-	unsigned int fourCC = *(unsigned int*)&(header[80]);
-
-
-	unsigned char* buffer;
-	unsigned int bufsize;
-	/* how big is it going to be including all mipmaps? */
-	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-	buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
-	fread(buffer, 1, bufsize, fp);
-	/* close the file pointer */
-	fclose(fp);
-
-	unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
-	unsigned int format;
-	switch (fourCC)
-	{
-	case FOURCC_DXT1:
-		format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-		break;
-	case FOURCC_DXT3:
-		format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-		break;
-	case FOURCC_DXT5:
-		format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-		break;
-	default:
-		free(buffer);
-		return 0;
-	}
-
-	// Create one OpenGL texture
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-
-	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-	unsigned int offset = 0;
-
-	/* load the mipmaps */
-	for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
-	{
-		unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-		glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
-			0, size, buffer + offset);
-
-		offset += size;
-		width /= 2;
-		height /= 2;
-
-		// Deal with Non-Power-Of-Two textures. This code is not included in the webpage to reduce clutter.
-		if (width < 1) width = 1;
-		if (height < 1) height = 1;
-
-	}
-
-	free(buffer);
-
-	return textureID;
-
-
+	glGenBuffers(1, &target_obj->normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, target_obj->normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, target_obj->normals.size() * sizeof(glm::vec3), &target_obj->normals[0], GL_STATIC_DRAW);
 }
-

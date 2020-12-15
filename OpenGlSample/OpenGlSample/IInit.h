@@ -1,5 +1,5 @@
 #pragma once
-class IIinit
+class Iinit
 {
 public:
 	virtual void init() = 0;

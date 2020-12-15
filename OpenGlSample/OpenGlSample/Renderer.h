@@ -1,36 +1,22 @@
 #pragma once
-
-#include "ICleanUp.h"
-#include "ISetPostion.h"
-#include "IUpdate.h"
 #include "FileManager.h"
-#include "NonRenderableObject.h"
-#include "RenderableObject.h"
-#include "Object.h"
-#include "Renderer.h"
+#include "ICleanUp.h"
+#include "IUpdate.h"
 #include <vector>
-#include "include/GL/glew.h"
-#include "include/GLFW/glfw3.h" 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
+class RenderableObj;
+class NonRenderableObj;
 
-
-class NonRenderableObject;
-class RenderableObject;
-
-
-
-
-class Renderer : public ICleanUp , public ISetPosition , public IUpdate
+class Renderer : public ICleanUp
 {
 private:
-	
-	std::vector<RenderableObject*> _objVector;
-	std::vector<NonRenderableObject*> _nonobjVector;
+	glm::vec3 cameraPos;
 
+	std::vector< RenderableObj*> renderObjList;
+	std::vector< NonRenderableObj*> nonrenderObjList;
 
 public:
+
 	static Renderer* instance()
 	{
 		static Renderer instance;
@@ -38,30 +24,17 @@ public:
 		return &instance;
 	}
 
-
-
 public:
-	
-
-	void RenderFirst();
-
-	void render();
-
-	void RenderLast();
-
-	void addRenderObject(RenderableObject* obj);
-
-	void addNonRenderObject(NonRenderableObject* obj);
-
-	void init();
-
 	GLFWwindow* window;
 
-	
-	virtual void  shutDown() override;
-	virtual void Update()override;
-	virtual void setPosition(float x, float y, float z)override;
-	
+	void addRenderObj(RenderableObj* obj);
+	void addNonRenderObj(NonRenderableObj* obj);
 
+	void render();
+	int init();
+	virtual void shutDown() override;
 
+	void update();
+	void Clear();
+	void Out();
 };

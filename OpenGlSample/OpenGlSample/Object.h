@@ -1,26 +1,16 @@
+
 #pragma once
-#include <vector>
-
-#include "include/GL/glew.h"
-#include "glm/glm.hpp"
-
-#include "ISetPostion.h"
 #include "ICleanUp.h"
 #include "IUpdate.h"
 #include "IInit.h"
 #include "IRender.h"
-
-#include "include/GL/glew.h"		
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/glm.hpp"
+#include "include/GL/glew.h"		
+#include "include/GLFW/glfw3.h" 
 
-class Object : public ICleanUp , public ISetPosition , public IUpdate , public IIinit , public IRender
+class Object :public ICleanUp, public IUpdate, public Iinit, public IRender
 {
-
-
 public:
 	virtual ~Object() {}
-	
-
-
-
 };

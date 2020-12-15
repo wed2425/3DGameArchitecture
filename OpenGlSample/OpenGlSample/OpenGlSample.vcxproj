@@ -39,7 +39,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -69,7 +69,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>F:\수업\3d아키텍처\3DGameArchitecture\bin\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -115,14 +117,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CompositeObj.h" />
     <ClInclude Include="IInit.h" />
-    <ClInclude Include="InputKey.h" />
     <ClInclude Include="IRender.h" />
     <ClInclude Include="ISetPostion.h" />
     <ClInclude Include="IUpdate.h" />
-    <ClInclude Include="nonrenderObj.h" />
-    <ClInclude Include="renderObj.h" />
-    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="KeyInput.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="glm\common.hpp" />
     <ClInclude Include="glm\detail\compute_common.hpp" />
@@ -368,7 +368,6 @@
     <ClInclude Include="glm\vec3.hpp" />
     <ClInclude Include="glm\vec4.hpp" />
     <ClInclude Include="glm\vector_relational.hpp" />
-    <ClInclude Include="Human.h" />
     <ClInclude Include="ICleanUp.h" />
     <ClInclude Include="include\GLFW\glfw3.h" />
     <ClInclude Include="include\GLFW\glfw3native.h" />
@@ -376,9 +375,9 @@
     <ClInclude Include="include\GL\glew.h" />
     <ClInclude Include="include\GL\glxew.h" />
     <ClInclude Include="include\GL\wglew.h" />
-    <ClInclude Include="NonRenderableObject.h" />
+    <ClInclude Include="NonRenderableObj.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="RenderableObject.h" />
+    <ClInclude Include="RenderableObj.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>
@@ -521,17 +520,12 @@
     <None Include="20161621_vs.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="CompositeObj.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="InputKey.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="NonRenderableObject.cpp" />
-    <ClCompile Include="nonrenderObj.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="RenderableObject.cpp" />
+    <ClCompile Include="KeyInput.cpp" />
+    <ClCompile Include="NonRenderableObj.cpp" />
+    <ClCompile Include="RenderableObj.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="renderObj.cpp" />
-    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

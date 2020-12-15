@@ -1,16 +1,19 @@
-#pragma once
+#ifndef __FILEMANAGER_H__
+#define __FILEMANAGER_H__
+
 #include <string>
 #include <vector>
 
-
-#include "Object.h"
-#include "FileManager.h"
-#include "RenderableObject.h"
+#include "include/GL/glew.h"		
+#include "include/GLFW/glfw3.h" 
+#include "glm/gtc/matrix_transform.hpp"
 #include "glm/glm.hpp"
-#include "include/GL/glew.h"
 
-class RenderableObject;
+#pragma comment(lib, "OpenGL32.lib")
+#pragma comment(lib, "lib-vc2017/glew32.lib")
+#pragma comment(lib, "lib-vc2017/glfw3.lib")
 
+class RenderableObj;
 
 class FileManager
 {
@@ -23,28 +26,23 @@ public:
 	}
 
 public:
-	void loadObj(
-		RenderableObject* target_obj,
-		const char* obj_path,
-		const char* texture_path,
-		const char* vs_shader_path,
-		const char* fs_shader_path
-	);
 
-	bool loadOBj(
+	//void loadObj(RenderableObject* obj, const char* vertex_data, const char* texturename, const char* vs_shader, const char* fs_shader);
+	void loadObj(
+		RenderableObj* target_obj,
+		std::string obj_path,
+		std::string texture_path,
+		std::string vs_shader_path,
+		std::string fs_shader_path);
+
+	bool loadOBJ(
 		const char* path,
 		std::vector<glm::vec3>& out_vertices,
 		std::vector<glm::vec2>& out_uvs,
 		std::vector<glm::vec3>& out_normals
 	);
-
-	GLuint loadDDS(const char* imagepath);
-
 	GLuint loadBMP(const char* imagepath);
-
-
-	GLuint loadShaders(const char* vertex_file_path, const char* fragment_file_path);
-
-
-	
+	GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path);
 };
+
+#endif // !__FILEMANAGER_H__
