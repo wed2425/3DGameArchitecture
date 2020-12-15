@@ -1,19 +1,19 @@
-#include "Lose.h"
+#include "../include/Keeper.h"
 #include "FileManager.h"
 #include "Renderer.h"
 
-void Lose::setPosition(float x, float y, float z)
+void Keeper::setPosition(float x, float y, float z)
 {
 	position = glm::vec3(x, y, z);
 }
 
-void Lose::setRotation(float speed, float x, float y, float z)
+void Keeper::setRotation(float speed, float x, float y, float z)
 {
 	rotSpeed = speed;
 	rotVec = glm::vec3(x, y, z);
 }
 
-void Lose::setScale(float x, float y, float z)
+void Keeper::setScale(float x, float y, float z)
 {
 	scaleVec = glm::vec3(x, y, z);
 	if (scaleVec.x != 0.0f || scaleVec.y != 0.0f || scaleVec.z != 0.0f)
@@ -22,43 +22,46 @@ void Lose::setScale(float x, float y, float z)
 	}
 }
 
-void Lose::setCameraPos(float x, float y, float z)
+void Keeper::setCameraPos(float x, float y, float z)
 {
 	cameraPos = glm::vec3(-x, -y, -z);
 }
 
-void Lose::init()
+void Keeper::init()
 {
-	FileManager* filemgr = FileManager::instance();
-	filemgr->loadObj(this, "Lose.obj", "sun.bmp", "20161621_vs.shader", "20161621_fs.shader");
-	this->setPosition(10, 0, 0);
-	this->setCameraPos(0, 0, 0);
-	this->setScale(0.5, 0.5, 0.5);
+	FileManager::instance()->loadObj(this, "Human.obj", "skin.bmp", "20161621_vs.shader", "20161621_fs.shader");
 
-	IsLose = true;
+	this->setPosition(0.0f, -7.0f, 0.0f);
+	this->setCameraPos(0, 0, 0);
+	this->setScale(0.0f, 0.0f, 0.0f);
+	this->movePos = glm::mat4(1.0f);
+	currentState = true;
 
 }
 
-void Lose::render()
+void Keeper::render()
 {
-	Renderer* renderer = Renderer::instance();
-
-	if (glfwGetKey(renderer->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		if (IsLose == false)
+	if (glfwGetKey(Renderer::instance()->window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		if (position.x < 12.0f)
 		{
-			this->setPosition(10, 0, 0);
-			IsLose = true;
+			position.x += 0.08f;
+		}
+	}
+	
+	if (glfwGetKey(Renderer::instance()->window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		if (position.x > -12.0f)
+		{
+			position.x -= 0.08f;
 		}
 	}
 
-	if (IsLose == false)
+	if (currentState == false)
 	{
-		this->setScale(1.0, 1.0, 1.0);
-		this->setPosition(-5.0, 1, 0);
-
+		this->setPosition(30.0f, 0.0f, 0.0f);
 	}
 
 	glUseProgram(this->programID);
+
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->Texture);
@@ -100,8 +103,6 @@ void Lose::render()
 		0,                                // stride
 		(void*)0                          // array buffer offset
 	);
-
-
 
 	glm::mat4 moveCameraPos = glm::mat4(1.0f);
 	moveCameraPos = glm::translate(moveCameraPos, this->cameraPos);
@@ -151,7 +152,6 @@ void Lose::render()
 	MVP = ProjectionMatrix * moveCameraPos * WorldView * WorldTransform;
 
 
-
 	glUniformMatrix4fv(this->MatrixID, 1, GL_FALSE, &MVP[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
 
@@ -169,15 +169,14 @@ void Lose::render()
 		WorldTransform = Transform;
 		WorldView = View;
 	}
+
 }
 
-void Lose::Update()
+void Keeper::Update()
 {
-
 }
 
-
-void Lose::shutDown()
+void Keeper::shutDown()
 {
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
@@ -187,19 +186,18 @@ void Lose::shutDown()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-void Lose::AddChild(CompositeObj* addObj)
+void Keeper::AddChild(CompositeObj* addObj)
 {
 	children->push_back(addObj);
 	addObj->Parent = this;
 }
 
-
-bool Lose::getGameLose()
+bool Keeper::getState()
 {
-	return IsLose;
+	return currentState;
 }
 
-void Lose::setGameLose(bool _Lose)
+void Keeper::setState(bool _currentState)
 {
-	IsLose = _Lose;
+	currentState = _currentState;
 }

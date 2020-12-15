@@ -11,12 +11,12 @@
 #include "NonRenderableObj.h"
 #include "Time.h"
 #include "CompositeObj.h"
-#include "BackGround.h"
-#include "Keeper.h"
-#include "BasketBall.h"
-#include "SoccerBall.h"
-#include "Victory.h"
-#include "Lose.h"
+#include "../include/BackGround.h"
+#include "../include/Keeper.h"
+#include "../include/BasketBall.h"
+#include "../include/SoccerBall.h"
+#include "../include/Victory.h"
+#include "../include/Lose.h"
 
 bool BallCollision(CompositeObj* left, CompositeObj* right)
 {

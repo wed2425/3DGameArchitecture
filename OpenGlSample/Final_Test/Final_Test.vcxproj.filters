@@ -15,45 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\BackGround.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
+    <ClCompile Include="source\BasketBall.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Keeper.cpp">
+    <ClCompile Include="source\Keeper.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BasketBall.cpp">
+    <ClCompile Include="source\Lose.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SoccerBall.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Victory.cpp">
+    <ClCompile Include="source\SoccerBall.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Lose.cpp">
+    <ClCompile Include="source\Victory.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackGround.h">
+    <ClInclude Include="include\BackGround.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Keeper.h">
+    <ClInclude Include="include\BasketBall.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BasketBall.h">
+    <ClInclude Include="include\Keeper.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SoccerBall.h">
+    <ClInclude Include="include\Lose.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Victory.h">
+    <ClInclude Include="include\Victory.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Lose.h">
+    <ClInclude Include="include\SoccerBall.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

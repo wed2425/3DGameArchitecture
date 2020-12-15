@@ -1,19 +1,19 @@
-#include "Keeper.h"
+#include "../include/BasketBall.h"
 #include "FileManager.h"
-#include "Renderer.h"
+#include "Time.h"
 
-void Keeper::setPosition(float x, float y, float z)
+void BasketBall::setPosition(float x, float y, float z)
 {
 	position = glm::vec3(x, y, z);
 }
 
-void Keeper::setRotation(float speed, float x, float y, float z)
+void BasketBall::setRotation(float speed, float x, float y, float z)
 {
 	rotSpeed = speed;
 	rotVec = glm::vec3(x, y, z);
 }
 
-void Keeper::setScale(float x, float y, float z)
+void BasketBall::setScale(float x, float y, float z)
 {
 	scaleVec = glm::vec3(x, y, z);
 	if (scaleVec.x != 0.0f || scaleVec.y != 0.0f || scaleVec.z != 0.0f)
@@ -22,46 +22,52 @@ void Keeper::setScale(float x, float y, float z)
 	}
 }
 
-void Keeper::setCameraPos(float x, float y, float z)
+void BasketBall::setCameraPos(float x, float y, float z)
 {
 	cameraPos = glm::vec3(-x, -y, -z);
 }
 
-void Keeper::init()
+void BasketBall::init()
 {
-	FileManager::instance()->loadObj(this, "Human.obj", "skin.bmp", "20161621_vs.shader", "20161621_fs.shader");
-
-	this->setPosition(0.0f, -7.0f, 0.0f);
+	FileManager* filemgr = FileManager::instance();
+	filemgr->loadObj(this, "sphere.obj", "BasketBall.bmp", "20161621_vs.shader", "20161621_fs.shader");
 	this->setCameraPos(0, 0, 0);
 	this->setScale(0.0f, 0.0f, 0.0f);
-	this->movePos = glm::mat4(1.0f);
-	currentState = true;
 
+	int random = rand() % 2 + 1;
+	float randomPos = rand() / (float)RAND_MAX * (90.0f);
+	speed = rand() / (float)RAND_MAX * (0.01f) + (0.1f);
+	if (random == 1)
+	{
+		this->setPosition(randomPos, 30.0f, 0);
+	}
+	else if (random == 2)
+	{
+		this->setPosition(-(randomPos), 20.0f, 0);
+	}
 }
 
-void Keeper::render()
+void BasketBall::render()
 {
-	if (glfwGetKey(Renderer::instance()->window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		if (position.x < 12.0f)
-		{
-			position.x += 0.08f;
-		}
-	}
-	
-	if (glfwGetKey(Renderer::instance()->window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		if (position.x > -12.0f)
-		{
-			position.x -= 0.08f;
-		}
-	}
-
-	if (currentState == false)
-	{
-		this->setPosition(30.0f, 0.0f, 0.0f);
-	}
-
 	glUseProgram(this->programID);
 
+	position.y -= speed;
+
+	if (position.y < -25.0f)
+	{
+		int random = rand() % 2 + 1;
+		float randomPos = rand() / (float)RAND_MAX * (40.0f);
+		speed = rand() / (float)RAND_MAX * (0.01f) + (0.1f);
+		if (random == 1)
+		{
+			this->setPosition(randomPos, 60.0f, 0);
+		}
+		else if (random == 2)
+		{
+			this->setPosition(-(randomPos), 20.0f, 0);
+		}
+
+	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->Texture);
@@ -103,6 +109,8 @@ void Keeper::render()
 		0,                                // stride
 		(void*)0                          // array buffer offset
 	);
+
+
 
 	glm::mat4 moveCameraPos = glm::mat4(1.0f);
 	moveCameraPos = glm::translate(moveCameraPos, this->cameraPos);
@@ -169,14 +177,15 @@ void Keeper::render()
 		WorldTransform = Transform;
 		WorldView = View;
 	}
-
 }
 
-void Keeper::Update()
+void BasketBall::Update()
 {
+
 }
 
-void Keeper::shutDown()
+
+void BasketBall::shutDown()
 {
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
@@ -186,18 +195,8 @@ void Keeper::shutDown()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-void Keeper::AddChild(CompositeObj* addObj)
+void BasketBall::AddChild(CompositeObj* addObj)
 {
 	children->push_back(addObj);
 	addObj->Parent = this;
-}
-
-bool Keeper::getState()
-{
-	return currentState;
-}
-
-void Keeper::setState(bool _currentState)
-{
-	currentState = _currentState;
 }

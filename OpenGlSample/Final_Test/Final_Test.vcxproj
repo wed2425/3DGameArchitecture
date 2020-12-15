@@ -142,21 +142,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="BasketBall.cpp" />
-    <ClCompile Include="Lose.cpp" />
-    <ClCompile Include="Victory.cpp" />
-    <ClCompile Include="Keeper.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="SoccerBall.cpp" />
+    <ClCompile Include="source\BackGround.cpp" />
+    <ClCompile Include="source\BasketBall.cpp" />
+    <ClCompile Include="source\Lose.cpp" />
+    <ClCompile Include="source\Victory.cpp" />
+    <ClCompile Include="source\Keeper.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\SoccerBall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackGround.h" />
-    <ClInclude Include="Lose.h" />
-    <ClInclude Include="Victory.h" />
-    <ClInclude Include="Keeper.h" />
-    <ClInclude Include="BasketBall.h" />
-    <ClInclude Include="SoccerBall.h" />
+    <ClInclude Include="include\BackGround.h" />
+    <ClInclude Include="include\Lose.h" />
+    <ClInclude Include="include\Victory.h" />
+    <ClInclude Include="include\Keeper.h" />
+    <ClInclude Include="include\BasketBall.h" />
+    <ClInclude Include="include\SoccerBall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

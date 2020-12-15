@@ -1,19 +1,19 @@
-#include "SoccerBall.h"
+#include <iostream>
+#include "../include/BackGround.h"
 #include "FileManager.h"
-#include "Time.h"
 
-void SoccerBall::setPosition(float x, float y, float z)
+void BackGround::setPosition(float x, float y, float z)
 {
 	position = glm::vec3(x, y, z);
 }
 
-void SoccerBall::setRotation(float speed, float x, float y, float z)
+void BackGround::setRotation(float speed, float x, float y, float z)
 {
 	rotSpeed = speed;
 	rotVec = glm::vec3(x, y, z);
 }
 
-void SoccerBall::setScale(float x, float y, float z)
+void BackGround::setScale(float x, float y, float z)
 {
 	scaleVec = glm::vec3(x, y, z);
 	if (scaleVec.x != 0.0f || scaleVec.y != 0.0f || scaleVec.z != 0.0f)
@@ -22,52 +22,24 @@ void SoccerBall::setScale(float x, float y, float z)
 	}
 }
 
-void SoccerBall::setCameraPos(float x, float y, float z)
+void BackGround::setCameraPos(float x, float y, float z)
 {
 	cameraPos = glm::vec3(-x, -y, -z);
 }
 
-void SoccerBall::init()
+void BackGround::init()
 {
-	FileManager* filemgr = FileManager::instance();
-	filemgr->loadObj(this, "sphere.obj", "SoccerBall.bmp", "20161621_vs.shader", "20161621_fs.shader");
+	FileManager::instance()->loadObj(this, "cube.obj", "BackGround.bmp", "20161621_vs.shader", "20161621_fs.shader");
+
+	this->setPosition(0, 0, -30);
 	this->setCameraPos(0, 0, 0);
 	this->setScale(0.0f, 0.0f, 0.0f);
 
-	int random = rand() % 2 + 1;
-	float randomPos = rand() / (float)RAND_MAX * (90.0f);
-	speed = rand() / (float)RAND_MAX * (0.01f) + (0.1f);
-	if (random == 1)
-	{
-		this->setPosition(randomPos, 30.0f, 0);
-	}
-	else if (random == 2)
-	{
-		this->setPosition(-(randomPos), 20.0f, 0);
-	}
 }
 
-void SoccerBall::render()
+void BackGround::render()
 {
 	glUseProgram(this->programID);
-
-	position.y -= speed;
-
-	if (position.y < -25.0f)
-	{
-		int random = rand() % 2 + 1;
-		float randomPos = rand() / (float)RAND_MAX * (40.0f);
-		speed = rand() / (float)RAND_MAX * (0.01f) + (0.1f);
-		if (random == 1)
-		{
-			this->setPosition(randomPos, 60.0f, 0);
-		}
-		else if (random == 2)
-		{
-			this->setPosition(-(randomPos), 20.0f, 0);
-		}
-
-	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->Texture);
@@ -110,8 +82,6 @@ void SoccerBall::render()
 		(void*)0                          // array buffer offset
 	);
 
-
-
 	glm::mat4 moveCameraPos = glm::mat4(1.0f);
 	moveCameraPos = glm::translate(moveCameraPos, this->cameraPos);
 
@@ -140,7 +110,6 @@ void SoccerBall::render()
 		up
 	);
 
-
 	ModelMatrix = glm::mat4(1.0f);
 
 	glm::mat4 MVP;
@@ -158,7 +127,6 @@ void SoccerBall::render()
 	View = ViewMatrix;
 
 	MVP = ProjectionMatrix * moveCameraPos * WorldView * WorldTransform;
-
 
 	glUniformMatrix4fv(this->MatrixID, 1, GL_FALSE, &MVP[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
@@ -179,13 +147,12 @@ void SoccerBall::render()
 	}
 }
 
-void SoccerBall::Update()
+void BackGround::Update()
 {
 
 }
 
-
-void SoccerBall::shutDown()
+void BackGround::shutDown()
 {
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
@@ -195,8 +162,10 @@ void SoccerBall::shutDown()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-void SoccerBall::AddChild(CompositeObj* addObj)
+void BackGround::AddChild(CompositeObj* addObj)
 {
 	children->push_back(addObj);
 	addObj->Parent = this;
 }
+
+

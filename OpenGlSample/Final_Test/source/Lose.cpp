@@ -1,19 +1,19 @@
-#include "Victory.h"
+#include "../include/Lose.h"
 #include "FileManager.h"
 #include "Renderer.h"
 
-void Victory::setPosition(float x, float y, float z)
+void Lose::setPosition(float x, float y, float z)
 {
 	position = glm::vec3(x, y, z);
 }
 
-void Victory::setRotation(float speed, float x, float y, float z)
+void Lose::setRotation(float speed, float x, float y, float z)
 {
 	rotSpeed = speed;
 	rotVec = glm::vec3(x, y, z);
 }
 
-void Victory::setScale(float x, float y, float z)
+void Lose::setScale(float x, float y, float z)
 {
 	scaleVec = glm::vec3(x, y, z);
 	if (scaleVec.x != 0.0f || scaleVec.y != 0.0f || scaleVec.z != 0.0f)
@@ -22,38 +22,38 @@ void Victory::setScale(float x, float y, float z)
 	}
 }
 
-void Victory::setCameraPos(float x, float y, float z)
+void Lose::setCameraPos(float x, float y, float z)
 {
 	cameraPos = glm::vec3(-x, -y, -z);
 }
 
-void Victory::init()
+void Lose::init()
 {
 	FileManager* filemgr = FileManager::instance();
-	filemgr->loadObj(this, "Victory.obj", "sun.bmp", "20161621_vs.shader", "20161621_fs.shader");
+	filemgr->loadObj(this, "Lose.obj", "sun.bmp", "20161621_vs.shader", "20161621_fs.shader");
 	this->setPosition(10, 0, 0);
 	this->setCameraPos(0, 0, 0);
 	this->setScale(0.5, 0.5, 0.5);
 
-	IsVictory = true;
-	
+	IsLose = true;
+
 }
 
-void Victory::render()
+void Lose::render()
 {
 	Renderer* renderer = Renderer::instance();
 
 	if (glfwGetKey(renderer->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		if (IsVictory == false)
+		if (IsLose == false)
 		{
 			this->setPosition(10, 0, 0);
-			IsVictory = true;
+			IsLose = true;
 		}
 	}
 
-	if (IsVictory == false)
+	if (IsLose == false)
 	{
-		this->setScale(1, 1, 1);
+		this->setScale(1.0, 1.0, 1.0);
 		this->setPosition(-5.0, 1, 0);
 
 	}
@@ -171,13 +171,13 @@ void Victory::render()
 	}
 }
 
-void Victory::Update()
+void Lose::Update()
 {
 
 }
 
 
-void Victory::shutDown()
+void Lose::shutDown()
 {
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
@@ -187,19 +187,19 @@ void Victory::shutDown()
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
 
-void Victory::AddChild(CompositeObj* addObj)
+void Lose::AddChild(CompositeObj* addObj)
 {
 	children->push_back(addObj);
 	addObj->Parent = this;
 }
 
 
-bool Victory::getGameVictory()
+bool Lose::getGameLose()
 {
-	return IsVictory;
+	return IsLose;
 }
 
-void Victory::setGameVictory(bool _victory)
+void Lose::setGameLose(bool _Lose)
 {
-	IsVictory = _victory;
+	IsLose = _Lose;
 }
